@@ -1,11 +1,11 @@
 import './App.css';
-import MyFridge from './Components/MyFridge';
+import MyFridge from './components/MyFridge';
 import Test from './Backend/test';
 
 function App() {
   return (
     <div className="App">
-    <MyFridge/>
+      <MyFridge/>
       <Test/>
     </div>
   );
