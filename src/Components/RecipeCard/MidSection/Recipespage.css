@@ -1,0 +1,73 @@
+.all_div {
+  text-align: center;
+  margin: 1%;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #00b4cc;
+  border-radius: 25px;
+  max-width: 18rem;
+  height: auto;
+  padding: 2%;
+}
+
+.search_bar {
+  width: 50%;
+  border: 3px solid #00b4cc;
+  padding: 1rem;
+  height: 1rem;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #9dbfaf;
+}
+
+.check_boxes {
+  /* appearance: none; */
+  background-color: #fff;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+  margin: 0.2%;
+}
+
+.labels {
+  margin-right: 0.5%;
+}
+
+.recipe_imgs {
+  margin-top: 2%;
+  border-radius: 10px;
+  margin-bottom: 2%;
+  max-width: 90%;
+}
+
+.card_buttons {
+  background-color: #4caf50; /* Green */
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  margin: 0 5% 0 5%;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.card_buttons:hover {
+  background-color: white;
+  color: #4caf50;
+}
