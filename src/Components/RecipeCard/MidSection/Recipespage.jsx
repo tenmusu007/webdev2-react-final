@@ -2,7 +2,7 @@ import fakeData from "./fakeData";
 import fakeDataFridge from "./fakeDataFridge";
 import React, { useEffect, useState } from "react";
 // import axios from "axios";
-import "./Recipespage.css";
+// import "./Recipespage.css";
 // import { MidPart } from "./Recipespage.styled";
 
 const Recipespage = () => {

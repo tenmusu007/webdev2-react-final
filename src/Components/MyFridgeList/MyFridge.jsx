@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { dataContext } from "../../Backend/useContext";
+
 
 export default function MyFridge() {
 	const [query, setQuery] = useState("");
@@ -9,16 +11,18 @@ export default function MyFridge() {
 	const [ingredientId, setIngredientId] = useState("");
 	const [ingredientImage, setIngredientImage] = useState("");
 	const [fridgeList, setFridgeList] = useState([]);
-
-	useEffect(() => {
-		const loadIngredients = async () => {
-			const response = await axios.get(
-				`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=88749994321f4e4eaa03a853e6edf42c&query=${query}&metaInformation=true`
-			);
-			setAutocomplete(response.data);
-		};
-		loadIngredients();
-	}, [query]);
+	const { fridgeAddFireBase, user } = useContext(dataContext)
+	console.log("fridgeList", fridgeList);
+	// console.log("data", data);
+	// useEffect(() => {
+	// 	const loadIngredients = async () => {
+	// 		const response = await axios.get(
+	// 			`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${process.env.REACT_APP_FOODAPIKEY}&query=${query}&metaInformation=true`
+	// 		);
+	// 		setAutocomplete(response.data);
+	// 	};
+	// 	loadIngredients();
+	// }, [query]);
 
     
 
@@ -42,6 +46,10 @@ export default function MyFridge() {
 				...oldArray,
 				{ id: ingredientId, name: ingredient, image: ingredientImage },
 			]);
+			fridgeAddFireBase([
+				...fridgeList,
+				{ id: ingredientId, name: ingredient, image: ingredientImage },
+			])
 			setIngredient("");
 			setIngredientId("");
 			setIngredientImage("");
@@ -51,6 +59,8 @@ export default function MyFridge() {
 
 	const deleteFromFridgeList = (id) => {
 		setFridgeList((oldArray) => oldArray.filter((item) => item.id !== id));
+		const firebaseFridgeList = fridgeList.filter((item) => item.id !== id)
+		fridgeAddFireBase([...firebaseFridgeList])
 	};
 
 	const imgStyle = {
@@ -88,7 +98,7 @@ export default function MyFridge() {
 				</ul>
 			</form>
 			<div style={listStyle}>
-				{fridgeList.map((item, i) => (
+				{user.data.myfridge.map((item, i) => (
 					<div key={item.id}>
 						<img
 							style={imgStyle}
