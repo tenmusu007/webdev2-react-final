@@ -169,7 +169,7 @@ const Test = () => {
 			console.error("Error adding document: ", e);
 		}
 	};
-	const fridgeAddFireBase = async (item) => {
+	 const fridgeAddFireBase = async (item) => {
 		const q = query(collection(db, "recipe"), where("id", "==", user.data.id));
 		const querySnapshot = await getDocs(q);
 		const newArr = [];
