@@ -23,20 +23,18 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
 	const [user, setUser] = useState({});
-	const [isLogin, setIsLogin] = useState(false)
-  const [count, setCount] = useState(0);
-	const [fridgeList, setFridgeList] = useState(
-		{
-			data: {
-				docId: "",
-				id: "",
-				itemToBuy: [],
-				myfridge: [],
-				myrecipe: [],
-			},
+	const [isLogin, setIsLogin] = useState(false);
+	const [count, setCount] = useState(0);
+	const [fridgeList, setFridgeList] = useState({
+		data: {
 			docId: "",
+			id: "",
+			itemToBuy: [],
+			myfridge: [],
+			myrecipe: [],
 		},
-	);
+		docId: "",
+	});
 
 	const [userData, setUserData] = useState({
 		data: {
@@ -49,40 +47,67 @@ export const AuthContextProvider = ({ children }) => {
 		docId: "",
 	});
 	// console.log(user);
+	const provider = new GoogleAuthProvider();
 	const googleSignIn = () => {
-		const provider = new GoogleAuthProvider();
+		// setIsLogin(!isLogin);
 		signInWithPopup(auth, provider);
 	};
 
 	const logOut = () => {
-		setCount(count + 1 )
+		setCount(count + 1);
+		setFridgeList({
+			data: {
+				docId: "",
+				id: "",
+				itemToBuy: [],
+				myfridge: [],
+				myrecipe: [],
+			},
+			docId: "",
+		});
+		// setIsLogin(!isLogin);
 		signOut(auth);
 	};
 
 	useEffect(() => {
-    console.log("effect working AuthContext");
+		console.log("effect working AuthContext");
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-			setUser(currentUser);
-			const fetch = async () => {
-				const q = query(
-					collection(db, "recipe"),
-					where("id", "==", currentUser.uid)
-				);
-				// console.log(q);
-				const newArr = [];
-				const querySnapshot = await getDocs(q);
-				querySnapshot.forEach((doc) => {
-					// console.log(doc.data());
-					setUserData({ data: doc.data(), docId: doc.id });
-					setFridgeList({ data: doc.data(), docId: doc.id });
-					newArr.push(doc.data());
+			if (!currentUser) {
+				setUser(null);
+				setFridgeList({
+					data: {
+						docId: "",
+						id: "",
+						itemToBuy: [],
+						myfridge: [],
+						myrecipe: [],
+					},
+					docId: "",
 				});
-			};
-			fetch();
+			} else {
+				setUser(currentUser);
+				const fetch = async () => {
+					const q = query(
+						collection(db, "recipe"),
+						where("id", "==", currentUser.uid)
+					);
+					// setIsLogin(!isLogin);
+					// console.log(q);
+					const newArr = [];
+					const querySnapshot = await getDocs(q);
+					querySnapshot.forEach((doc) => {
+						// console.log(doc.data());
+						setUserData({ data: doc.data(), docId: doc.id });
+						setFridgeList({ data: doc.data(), docId: doc.id });
+						newArr.push(doc.data());
+					});
+				};
+				fetch();
+			}
 		});
 		return () => {
 			unsubscribe();
-}
+		};
 	}, [count]);
 	return (
 		<AuthContext.Provider

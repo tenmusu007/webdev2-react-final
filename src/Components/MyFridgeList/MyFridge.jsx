@@ -15,19 +15,18 @@ export default function MyFridge() {
 	const [ingredientId, setIngredientId] = useState("");
 	const [ingredientImage, setIngredientImage] = useState("");
 	const { fridgeAddFireBase, user, setUser } = useContext(DataContext)
-	const { userData, count, setCount, fridgeList, setFridgeList, isLogin,
-		setIsLogin, } = useContext(AuthContext);	
+	const { userData, count, setCount, fridgeList, setFridgeList, isLogin } = useContext(AuthContext);	
 
 
-		useEffect(() => {
-			const loadIngredients = async () => {
-				const response = await axios.get(
-					`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${process.env.REACT_APP_FOODAPIKEY}&query=${query}&metaInformation=true`
-				);
-				setAutocomplete(response.data);
-			};
-			loadIngredients();
-		}, [query]);
+		// useEffect(() => {
+		// 	const loadIngredients = async () => {
+		// 		const response = await axios.get(
+		// 			`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${process.env.REACT_APP_FOODAPIKEY}&query=${query}&metaInformation=true`
+		// 		);
+		// 		setAutocomplete(response.data);
+		// 	};
+		// 	loadIngredients();
+		// }, [query]);
 
 
 
@@ -95,7 +94,7 @@ export default function MyFridge() {
 				</WhisperUl>
 			</form>
 			<ListDiv>
-				{!isLogin && fridgeList.data.myfridge.map((item, i) => (
+				{isLogin && fridgeList.data.myfridge.map((item, i) => (
 					<IngredientDiv key={item.id}>
 						<IngredientImg
 							alt={item.name}
