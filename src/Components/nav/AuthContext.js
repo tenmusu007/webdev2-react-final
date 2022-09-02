@@ -75,9 +75,7 @@ export const AuthContextProvider = ({ children }) => {
 					setFridgeList({ data: doc.data(), docId: doc.id });
 					newArr.push(doc.data());
 				});
-				// setUser(...newArr)
 			};
-			// console.log("User", currentUser);
 			fetch();
 		});
 

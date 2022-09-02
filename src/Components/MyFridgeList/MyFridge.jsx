@@ -18,15 +18,15 @@ export default function MyFridge() {
 	const { userData, count, setCount, fridgeList, setFridgeList } = useContext(AuthContext);	
 
 
-		useEffect(() => {
-			const loadIngredients = async () => {
-				const response = await axios.get(
-					`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${process.env.REACT_APP_FOODAPIKEY}&query=${query}&metaInformation=true`
-				);
-				setAutocomplete(response.data);
-			};
-			loadIngredients();
-		}, [query]);
+		// useEffect(() => {
+		// 	const loadIngredients = async () => {
+		// 		const response = await axios.get(
+		// 			`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${process.env.REACT_APP_FOODAPIKEY}&query=${query}&metaInformation=true`
+		// 		);
+		// 		setAutocomplete(response.data);
+		// 	};
+		// 	loadIngredients();
+		// }, [query]);
 
 
 
