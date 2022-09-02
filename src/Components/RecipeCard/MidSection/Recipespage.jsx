@@ -2,12 +2,8 @@ import fakeData from "./fakeData";
 import fakeDataFridge from "./fakeDataFridge";
 import React, { useEffect, useState } from "react";
 // import axios from "axios";
-<<<<<<< HEAD
-// import "./Recipespage.css";
-=======
 import "./Recipespage.css";
 import MyRecipes from "../MyRecipesBar(RightSection)/MyRecipes";
->>>>>>> 9a515dc051a7e9ba81242c60386ad936b49ce664
 // import { MidPart } from "./Recipespage.styled";
 
 const Recipespage = () => {
