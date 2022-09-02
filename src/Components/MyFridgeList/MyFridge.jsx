@@ -14,22 +14,19 @@ export default function MyFridge() {
 	const [ingredient, setIngredient] = useState("");
 	const [ingredientId, setIngredientId] = useState("");
 	const [ingredientImage, setIngredientImage] = useState("");
-	const [fridgeList, setFridgeList] = useState([]);
 	const { fridgeAddFireBase, user, setUser } = useContext(DataContext)
-	const { userData } = useContext(AuthContext);
+	const { userData, count, setCount, fridgeList, setFridgeList } = useContext(AuthContext);	
 
-	console.log("fridgeList", fridgeList);
-	console.log("data", userData);
-	// console.log("data", autocomplete);
-	// useEffect(() => {
-	// 	const loadIngredients = async () => {
-	// 		const response = await axios.get(
-	// 			`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${process.env.REACT_APP_FOODAPIKEY}&query=${query}&metaInformation=true`
-	// 		);
-	// 		setAutocomplete(response.data);
-	// 	};
-	// 	loadIngredients();
-	// }, [query]);
+
+		useEffect(() => {
+			const loadIngredients = async () => {
+				const response = await axios.get(
+					`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${process.env.REACT_APP_FOODAPIKEY}&query=${query}&metaInformation=true`
+				);
+				setAutocomplete(response.data);
+			};
+			loadIngredients();
+		}, [query]);
 
 
 
@@ -50,10 +47,6 @@ export default function MyFridge() {
 	const sendToFridgeList = () => {
 		console.log("sending");
 		if (ingredientId !== "") {
-			setFridgeList((oldArray) => [
-				...oldArray,
-				{ id: ingredientId, name: ingredient, image: ingredientImage },
-			]);
 			fridgeAddFireBase([
 				...userData.data.myfridge,
 				{ id: ingredientId, name: ingredient, image: ingredientImage },
@@ -62,6 +55,7 @@ export default function MyFridge() {
 				...userData.data.myfridge,
 				{ id: ingredientId, name: ingredient, image: ingredientImage },
 			])
+			fridgeAddFireBase([...userData.data.myfridge, { id: ingredientId, name: ingredient, image: ingredientImage }])
 			setIngredient("");
 			setIngredientId("");
 			setIngredientImage("");
@@ -70,8 +64,8 @@ export default function MyFridge() {
 	};
 
 	const deleteFromFridgeList = (id) => {
-		setFridgeList((oldArray) => oldArray.filter((item) => item.id !== id));
-		const firebaseFridgeList = fridgeList.filter((item) => item.id !== id)
+		const firebaseFridgeList = userData.data.myfridge.filter((item) => item.id !== id)
+		console.log(firebaseFridgeList);
 		fridgeAddFireBase([...firebaseFridgeList])
 	};
 
@@ -91,7 +85,6 @@ export default function MyFridge() {
 				<WhisperUl id="whisper">
 					{autocomplete.map((item, i) => (
 						<WhisperDiv
-
 							onClick={() => temporaryList(item.id, item.name, item.image)}
 							key={item.id}
 						>
@@ -101,7 +94,7 @@ export default function MyFridge() {
 				</WhisperUl>
 			</form>
 			<ListDiv>
-				{userData.data.myfridge.map((item, i) => (
+				{fridgeList.data.myfridge.map((item, i) => (
 					<IngredientDiv key={item.id}>
 						<IngredientImg
 							alt={item.name}

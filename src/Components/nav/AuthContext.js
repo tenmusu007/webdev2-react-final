@@ -23,6 +23,20 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
 	const [user, setUser] = useState({});
+  const [count, setCount] = useState(0);
+	const [fridgeList, setFridgeList] = useState(
+		{
+			data: {
+				docId: "",
+				id: "",
+				itemToBuy: [],
+				myfridge: [],
+				myrecipe: [],
+			},
+			docId: "",
+		},
+	);
+
 	const [userData, setUserData] = useState({
 		data: {
 			docId: "",
@@ -44,6 +58,7 @@ export const AuthContextProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
+    console.log("effect working AuthContext");
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
 			setUser(currentUser);
 			const fetch = async () => {
@@ -57,6 +72,7 @@ export const AuthContextProvider = ({ children }) => {
 				querySnapshot.forEach((doc) => {
 					// console.log(doc.data());
 					setUserData({ data: doc.data(), docId: doc.id });
+					setFridgeList({ data: doc.data(), docId: doc.id });
 					newArr.push(doc.data());
 				});
 				// setUser(...newArr)
@@ -65,12 +81,21 @@ export const AuthContextProvider = ({ children }) => {
 			fetch();
 		});
 
-		return () => {
 			unsubscribe();
-		};
-	}, []);
+	}, [count]);
 	return (
-		<AuthContext.Provider value={{ googleSignIn, logOut, user, userData }}>
+		<AuthContext.Provider
+			value={{
+				googleSignIn,
+				logOut,
+				user,
+				userData,
+				count,
+				setCount,
+				fridgeList,
+				setFridgeList,
+			}}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

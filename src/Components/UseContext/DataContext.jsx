@@ -25,8 +25,8 @@ export const DataContext = createContext(null);
 export const DataProvider = ({children}) => {
   const [recipeList, setRecipeList] = useState([]);
   const [data, setData] = useState([]);
-  const [count, setCount] = useState(0);
-  const { userData } = useContext(AuthContext);
+  // const [count, setCount] = useState(0);
+  const { userData, count, setCount } = useContext(AuthContext);
 
   const [user, setUser] = useState({
     data: {
@@ -44,6 +44,7 @@ export const DataProvider = ({children}) => {
   const [getUser, setGetUser] = useState([]);
   const [getRecipe, setGetRecipe] = useState([]);
   useEffect(() => {
+    console.log("effect working dataContext");  
     const fetch = async () => {
       const q = query(
         collection(db, "recipe"),
@@ -69,7 +70,7 @@ export const DataProvider = ({children}) => {
     fetchRecipe();
     fetch();
     // fetchUsers();
-  }, [count, userData.docId]);
+  }, [count,userData.docId]);
   // console.log("userData", getUser);
   console.log("RecipeData", getRecipe);
   console.log("effect", user);
@@ -92,16 +93,16 @@ export const DataProvider = ({children}) => {
 
   const recipeAddFireBase = async (recipe) => {
     console.log("recipe", recipe);
-    const q = query(collection(db, "recipe"), where("id", "==", userData.data.id));
-    // console.log(q);
-    const querySnapshot = await getDocs(q);
-    const newArr = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      newArr.push(doc.data());
-      // console.log(doc.id, " => ", doc.data());
-    });
-    // console.log(newArr);
+    // const q = query(collection(db, "recipe"), where("id", "==", userData.data.id));
+    // // console.log(q);
+    // const querySnapshot = await getDocs(q);
+    // const newArr = [];
+    // querySnapshot.forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+    //   newArr.push(doc.data());
+    //   // console.log(doc.id, " => ", doc.data());
+    // });
+    // // console.log(newArr);
     try {
       const docRef = await setDoc(doc(db, "recipe", `${userData.docId}`), {
         id: userData.data.id,
@@ -116,15 +117,15 @@ export const DataProvider = ({children}) => {
     }
   };
   const fridgeAddFireBase = async (item) => {
-    // console.log(item);
-    const q = query(collection(db, "recipe"), where("id", "==", userData.data.id));
-    const querySnapshot = await getDocs(q);
-    const newArr = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      newArr.push(doc.data());
-      console.log(doc.id, " => ", doc.data());
-    });
+    console.log("contxt",item);
+    // const q = query(collection(db, "recipe"), where("id", "==", userData.data.id));
+    // const querySnapshot = await getDocs(q);
+    // const newArr = [];
+    // querySnapshot.forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+    //   newArr.push(doc.data());
+    //   console.log(doc.id, " => ", doc.data());
+    // });
     try {
       const docRef = await setDoc(doc(db, "recipe", `${userData.docId}`), {
         id: userData.data.id,
@@ -134,21 +135,21 @@ export const DataProvider = ({children}) => {
         myfridge: [...item],
         myrecipe: [...userData.data.myrecipe],
       });
-      setCount(count + 1)
+      await   setCount(count + 1)
       console.log("counted");
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
   const toBuyAddFireBase = async (item) => {
-    const q = query(collection(db, "recipe"), where("id", "==", userData.data.id));
-    console.log(q);
-    const querySnapshot = await getDocs(q);
-    const newArr = [];
-    querySnapshot.forEach((doc) => {
-      newArr.push(doc.data());
-      console.log(doc.id, " => ", doc.data());
-    });
+    // const q = query(collection(db, "recipe"), where("id", "==", userData.data.id));
+    // console.log(q);
+    // const querySnapshot = await getDocs(q);
+    // const newArr = [];
+    // querySnapshot.forEach((doc) => {
+    //   newArr.push(doc.data());
+    //   console.log(doc.id, " => ", doc.data());
+    // });
     try {
       const docRef = await setDoc(doc(db, "recipe", `${userData.docId}`), {
         id: userData.data.id,
@@ -162,7 +163,7 @@ export const DataProvider = ({children}) => {
       console.error("Error adding document: ", e);
     }
   };
-  return <DataContext.Provider value={{ recipeList }}>
+  return <DataContext.Provider value={{ fridgeAddFireBase, user, setUser}}>
     {children}
   </DataContext.Provider>;
 };
