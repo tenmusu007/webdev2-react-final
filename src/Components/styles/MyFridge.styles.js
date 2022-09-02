@@ -39,9 +39,7 @@ export const Add = styled.input`
     &:hover {
         cursor: pointer;
     }
-    
-
-`
+`;
 
 export const WhisperUl = styled.ul`
     position: absolute;
@@ -55,7 +53,7 @@ export const WhisperUl = styled.ul`
 export const WhisperDiv = styled.div`
     &:hover {
         background-color: lightgray;
-        cursor: pointer;
+        cursor: pointer; 
     }
 `;
 
@@ -64,15 +62,15 @@ export const ListDiv = styled.div`
 `;
 
 export const IngredientDiv = styled.div`
-    padding-bottom: 10px;
+    padding-bottom: 2px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 `;
 
 export const IngredientImg = styled.img`
-    width: 35px;
-    height: 35px;
+    width: 15%;
+    height: 15%;
     margin-right: 3px;
 `;
 

@@ -1,6 +1,7 @@
 import React from "react";
 
-const MyRecipes = ({ recipes }) => {
+const MyRecipes = ({ recipes, deletingRecipe }) => {
+
   return (
     <>
       <div>
@@ -12,7 +13,7 @@ const MyRecipes = ({ recipes }) => {
                 <>
                   <li key={index}>
                     <p>{item.title}</p>
-                    <button>Del</button>
+                    <button onClick={() => deletingRecipe(item.id)}>Del</button>
                   </li>
                 </>
               );

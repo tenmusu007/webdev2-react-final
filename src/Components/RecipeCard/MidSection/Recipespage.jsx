@@ -62,6 +62,17 @@ const Recipespage = () => {
     }
   };
 
+  const deletingRecipe = (id) => {
+    console.log(id);
+    let newRecipes = recipes.filter((item, index) => {
+      if(item.id != id){
+        return item
+      }
+    }) 
+    
+    setRecipes(newRecipes)
+  }
+
   return (
     <>
       <div className="all_div">
@@ -119,7 +130,7 @@ const Recipespage = () => {
                 );
               })}
         </div>
-        <MyRecipes recipes={recipes} />
+        <MyRecipes recipes={recipes} deletingRecipe={deletingRecipe} />
       </div>
     </>
   );
