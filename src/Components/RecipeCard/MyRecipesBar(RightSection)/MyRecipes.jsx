@@ -1,19 +1,20 @@
 import React from "react";
+import "./MyRecipes.css";
 
 const MyRecipes = ({ recipes, deletingRecipe }) => {
-
   return (
     <>
-      <div>
+      <div className="right_part_uu">
         <h2>My Recipes</h2>
+
         <ul>
           {recipes &&
             recipes.map((item, index) => {
               return (
                 <>
-                  <li key={index}>
+                  <li className="recipes_list" key={index}>
                     <p>{item.title}</p>
-                    <button onClick={() => deletingRecipe(item.id)}>Del</button>
+                   <i onClick={() => deletingRecipe(item.id)} class="fa-solid fa-trash-can"></i>
                   </li>
                 </>
               );
