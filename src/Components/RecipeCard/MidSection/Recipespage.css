@@ -1,4 +1,4 @@
-div {
+.all_div {
   text-align: center;
   margin: 1%;
 }
@@ -11,7 +11,7 @@ div {
 .card {
   background-color: #00b4cc;
   border-radius: 25px;
-  width: 500px;
+  max-width: 18rem;
   height: auto;
   padding: 2%;
 }
@@ -40,21 +40,22 @@ div {
   margin: 0.2%;
 }
 
-label {
+.labels {
   margin-right: 0.5%;
 }
 
-img {
+.recipe_imgs {
   margin-top: 2%;
   border-radius: 10px;
   margin-bottom: 2%;
+  max-width: 90%;
 }
 
-button {
+.card_buttons {
   background-color: #4caf50; /* Green */
   border: none;
   color: white;
-  padding: 16px 32px;
+  padding: 0.5rem 1rem;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -66,7 +67,7 @@ button {
   border-radius: 10px;
 }
 
-button:hover {
+.card_buttons:hover {
   background-color: white;
   color: #4caf50;
 }

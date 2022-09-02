@@ -4,6 +4,8 @@ import { useState, useEffect, useContext } from "react";
 import { dataContext } from "../../Backend/useContext";
 
 
+import { Add, Fridge, IngredientDiv, IngredientImg, IngredientName, ListDiv, ListName, RemoveBtn, Search, WhisperDiv, WhisperUl,} from "../styles/MyFridge.styles";
+
 export default function MyFridge() {
 	const [query, setQuery] = useState("");
 	const [autocomplete, setAutocomplete] = useState([]);
@@ -41,7 +43,7 @@ export default function MyFridge() {
 	};
 
 	const sendToFridgeList = () => {
-		if (ingredientId != "") {
+		if (ingredientId !== "") {
 			setFridgeList((oldArray) => [
 				...oldArray,
 				{ id: ingredientId, name: ingredient, image: ingredientImage },
@@ -63,21 +65,11 @@ export default function MyFridge() {
 		fridgeAddFireBase([...firebaseFridgeList])
 	};
 
-	const imgStyle = {
-		width: "3%",
-		height: "3%",
-	};
-
-	const listStyle = {
-		display: "flex",
-		flexDirection: "column",
-	};
-
 	return (
-		<div>
-			<h2>My Fridge</h2>
+		<Fridge>
+			<ListName>My Fridge</ListName>
 			<form>
-				<input
+				<Search
 					type="text"
 					id="searchInput"
 					list="pol"
@@ -85,35 +77,36 @@ export default function MyFridge() {
 					placeholder="Search"
 					onChange={(e) => handleOnChange(e)}
 				/>
-				<input type="button" value="Add" onClick={() => sendToFridgeList()} />
-				<ul id="whisper">
+				<Add type="button" value="Add" onClick={() => sendToFridgeList()} />
+				<WhisperUl id="whisper">
 					{autocomplete.map((item, i) => (
-						<div
+						<WhisperDiv
+
 							onClick={() => temporaryList(item.id, item.name, item.image)}
 							key={item.id}
 						>
 							{item.name}
-						</div>
+						</WhisperDiv>
 					))}
-				</ul>
+				</WhisperUl>
 			</form>
-			<div style={listStyle}>
-				{user.data.myfridge.map((item, i) => (
-					<div key={item.id}>
-						<img
-							style={imgStyle}
+			<ListDiv>
+				{fridgeList.map((item, i) => (
+					<IngredientDiv key={item.id}>
+						<IngredientImg
+							alt={item.name}
 							src={
 								"https://spoonacular.com/cdn/ingredients_100x100/" + item.image
 							}
 						/>
-						<span> {item.name} </span>
-						<button onClick={() => deleteFromFridgeList(item.id)}>
+						<IngredientName> {item.name} </IngredientName>
+						<RemoveBtn onClick={() => deleteFromFridgeList(item.id)}>
 							{" "}
 							Remove{" "}
-						</button>
-					</div>
+						</RemoveBtn>
+					</IngredientDiv>
 				))}
-			</div>
-		</div>
+			</ListDiv>
+		</Fridge>
 	);
 }

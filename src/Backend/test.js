@@ -12,8 +12,18 @@ import {
 	setDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
+<<<<<<< HEAD
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { dataContext } from "./useContext";
+=======
+import {
+	getAuth,
+	signInWithPopup,
+	GoogleAuthProvider,
+	onAuthStateChanged,
+} from "firebase/auth";
+import { async } from "@firebase/util";
+>>>>>>> 9a515dc051a7e9ba81242c60386ad936b49ce664
 
 const provider = new GoogleAuthProvider();
 
@@ -33,6 +43,7 @@ const StyledTest = styled.section`
 const Test = () => {
 	const {data} = useContext(dataContext)
 	const auth = getAuth();
+<<<<<<< HEAD
 	const { user, setUser } = useContext(dataContext);
 	// const [user, setUser] = useState({
 	// 	data:[],
@@ -67,6 +78,49 @@ const Test = () => {
 	// console.log("userData", getUser);
 	// console.log("RecipeData", getRecipe);
 	console.log("user", user);
+=======
+	const [user, setUser] = useState({
+		data: [],
+		docId: "",
+	});
+	const [getUser, setGetUser] = useState([]);
+	const [getRecipe, setGetRecipe] = useState([]);
+	useEffect(() => {
+		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+			// setUser(currentUser);
+			console.log("test", currentUser);
+			const fetch = async () => {
+				const q = query(
+					collection(db, "recipe"),
+					where("id", "==", currentUser.uid)
+				);
+				console.log(q);
+				const newArr = [];
+				const querySnapshot = await getDocs(q);
+				querySnapshot.forEach((doc) => {
+					// console.log(doc.data());
+					setUser({ data: doc.data(), docId: doc.id });
+					newArr.push(doc.data());
+				});
+			};
+			fetch();
+		});
+		const fetchRecipe = async () => {
+			const querySnapshot = await getDocs(collection(db, "recipe"));
+			const newArr = [];
+			querySnapshot.forEach((doc) => {
+				newArr.push({ data: doc.data(), docId: doc.id });
+			});
+			setGetRecipe(newArr);
+		};
+		unsubscribe();
+		fetchRecipe();
+		// fetchUsers();
+	}, []);
+	// console.log("userData", getUser);
+	// console.log("RecipeData", getRecipe);
+	// console.log("user", user);
+>>>>>>> 9a515dc051a7e9ba81242c60386ad936b49ce664
 	const googleAthu = () => {
 		// signInWithRedirect(auth, provider)
 		signInWithPopup(auth, provider)
@@ -128,6 +182,7 @@ const Test = () => {
 			});
 	};
 
+<<<<<<< HEAD
 	// const [fridge, setFridge] = useState([]);
 	// const [recipe, setRecipe] = useState([]);
 	// const fridgeRef = useRef("");
@@ -145,6 +200,24 @@ const Test = () => {
 	// 	setRecipe([...recipe, item]);
 	// 	recipeAddFireBase(item);
 	// };
+=======
+	const [fridge, setFridge] = useState([]);
+	const [recipe, setRecipe] = useState([]);
+	const fridgeRef = useRef("");
+	const recipegeRef = useRef("");
+	const handleSubmitFridge = (e) => {
+		e.preventDefault();
+		const item = fridgeRef.current.value;
+		setFridge([...fridge, item]);
+		fridgeAddFireBase(item);
+	};
+	const handleSubmitRecipe = (e) => {
+		e.preventDefault();
+		const item = recipegeRef.current.value;
+		setRecipe([...recipe, item]);
+		recipeAddFireBase(item);
+	};
+>>>>>>> 9a515dc051a7e9ba81242c60386ad936b49ce664
 
 	// const recipeAddFireBase = async (recipe) => {
 	// 	console.log("recipe", recipe);
@@ -248,7 +321,6 @@ const Test = () => {
 
 export default Test;
 
-
 // {
 // 	id: recipe.id,
 // 	docId: recipe.docId,
@@ -257,4 +329,3 @@ export default Test;
 // 	myfridge: [{obj}],
 // 	myrecipe: [{obj}],
 // 	}
-						
