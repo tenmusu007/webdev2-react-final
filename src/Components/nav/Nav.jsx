@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { UserAuth } from './AuthContext';
+import { useContext } from 'react';
+import { AuthContext } from './AuthContext';
 import "./nav.css";
 
 const Nav = () => {
-   const {user, logOut, googleSignIn} = UserAuth();
+   const { user, logOut, googleSignIn } = useContext(AuthContext);
 
    const handleSignOut = async () => {
       try {
