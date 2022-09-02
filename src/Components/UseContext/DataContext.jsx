@@ -40,11 +40,11 @@ export const DataProvider = ({children}) => {
   });
 
   // const Test = () => {
-  const auth = getAuth();
-  const [getUser, setGetUser] = useState([]);
-  const [getRecipe, setGetRecipe] = useState([]);
+  // const auth = getAuth();
+  // const [getUser, setGetUser] = useState([]);
+  // const [getRecipe, setGetRecipe] = useState([]);
   useEffect(() => {
-    console.log("effect working dataContext");  
+    // console.log("effect working dataContext");  
     const fetch = async () => {
       const q = query(
         collection(db, "recipe"),
@@ -59,37 +59,37 @@ export const DataProvider = ({children}) => {
         newArr.push(doc.data());
       });
     };
-    const fetchRecipe = async () => {
-      const querySnapshot = await getDocs(collection(db, "recipe"));
-      const newArr = [];
-      querySnapshot.forEach((doc) => {
-        newArr.push({ data: doc.data(), docId: doc.id });
-      });
-      setGetRecipe(newArr);
-    };
-    fetchRecipe();
+    // const fetchRecipe = async () => {
+    //   const querySnapshot = await getDocs(collection(db, "recipe"));
+    //   const newArr = [];
+    //   querySnapshot.forEach((doc) => {
+    //     newArr.push({ data: doc.data(), docId: doc.id });
+    //   });
+    //   // setGetRecipe(newArr);
+    // };
+    // fetchRecipe();
     fetch();
     // fetchUsers();
   }, [count,userData.docId]);
   // console.log("userData", getUser);
-  console.log("RecipeData", getRecipe);
-  console.log("effect", user);
-  const [fridge, setFridge] = useState([]);
-  const [recipe, setRecipe] = useState([]);
-  const fridgeRef = useRef("");
-  const recipegeRef = useRef("");
-  const handleSubmitFridge = (e) => {
-    e.preventDefault();
-    const item = fridgeRef.current.value;
-    setFridge([...fridge, item]);
-    fridgeAddFireBase(item);
-  };
-  const handleSubmitRecipe = (e) => {
-    e.preventDefault();
-    const item = recipegeRef.current.value;
-    setRecipe([...recipe, item]);
-    recipeAddFireBase(item);
-  };
+  // console.log("RecipeData", getRecipe);
+  // console.log("effect", user);
+  // const [fridge, setFridge] = useState([]);
+  // const [recipe, setRecipe] = useState([]);
+  // const fridgeRef = useRef("");
+  // const recipegeRef = useRef("");
+  // const handleSubmitFridge = (e) => {
+  //   e.preventDefault();
+  //   const item = fridgeRef.current.value;
+  //   setFridge([...fridge, item]);
+  //   fridgeAddFireBase(item);
+  // };
+  // const handleSubmitRecipe = (e) => {
+  //   e.preventDefault();
+  //   const item = recipegeRef.current.value;
+  //   setRecipe([...recipe, item]);
+  //   recipeAddFireBase(item);
+  // };
 
   const recipeAddFireBase = async (recipe) => {
     console.log("recipe", recipe);
@@ -163,7 +163,7 @@ export const DataProvider = ({children}) => {
       console.error("Error adding document: ", e);
     }
   };
-  return <DataContext.Provider value={{ fridgeAddFireBase, user, setUser}}>
+  return <DataContext.Provider value={{ fridgeAddFireBase, recipeAddFireBase, toBuyAddFireBase, user, setUser}}>
     {children}
   </DataContext.Provider>;
 };

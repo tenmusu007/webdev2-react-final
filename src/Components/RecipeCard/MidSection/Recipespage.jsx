@@ -2,17 +2,10 @@ import fakeData from "./fakeData";
 import fakeDataFridge from "./fakeDataFridge";
 import React, { useEffect, useState } from "react";
 // import axios from "axios";
-<<<<<<< HEAD
 import "./Recipespage.css";
 import MyRecipes from "../MyRecipesBar(RightSection)/MyRecipes";
-=======
-<<<<<<< HEAD
+
 // import "./Recipespage.css";
-=======
-import "./Recipespage.css";
-import MyRecipes from "../MyRecipesBar(RightSection)/MyRecipes";
->>>>>>> 9a515dc051a7e9ba81242c60386ad936b49ce664
->>>>>>> 1aed159d1567b14a00b471de9c94bfe3344da448
 // import { MidPart } from "./Recipespage.styled";
 
 const Recipespage = () => {
@@ -26,7 +19,7 @@ const Recipespage = () => {
   const handleCheckbox = (event) => {
     setChecked(!checked);
     const val = !checked ? event.target.value : "";
-    console.log(val);
+    // console.log(val);
     console.log("test const", checkBoxValue);
     setCheckBoxValue(!checked ? event.target.value : "");
     // setCheckBoxValue(event.target.value);
@@ -72,7 +65,7 @@ const Recipespage = () => {
   };
 
   const deletingRecipe = (id) => {
-    console.log(id);
+    // console.log(id);
     let newRecipes = recipes.filter((item, index) => {
       if(item.id != id){
         return item

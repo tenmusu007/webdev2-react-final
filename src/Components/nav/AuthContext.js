@@ -23,6 +23,7 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
 	const [user, setUser] = useState({});
+	const [isLogin, setIsLogin] = useState(false)
   const [count, setCount] = useState(0);
 	const [fridgeList, setFridgeList] = useState(
 		{
@@ -54,6 +55,7 @@ export const AuthContextProvider = ({ children }) => {
 	};
 
 	const logOut = () => {
+		setCount(count + 1 )
 		signOut(auth);
 	};
 
@@ -78,8 +80,9 @@ export const AuthContextProvider = ({ children }) => {
 			};
 			fetch();
 		});
-
+		return () => {
 			unsubscribe();
+}
 	}, [count]);
 	return (
 		<AuthContext.Provider
@@ -92,6 +95,8 @@ export const AuthContextProvider = ({ children }) => {
 				setCount,
 				fridgeList,
 				setFridgeList,
+				isLogin,
+				setIsLogin,
 			}}
 		>
 			{children}

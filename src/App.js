@@ -10,22 +10,24 @@ import { DataProvider } from "./Components/UseContext/DataContext";
 
 import Nav from "./Components/nav/Nav";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Recipe from "./pages/Recipe";
 
 function App() {
 	return (
 		<div className='App'>
 			<AuthContextProvider>
-				{/* <DataContext> */}
 					<DataProvider>
 						<Router>
 							<Nav />
 						</Router>
-						<MyFridge />
-			{/* <Recipes />	 */}
+					<Recipe/>
 					</DataProvider>
-				{/* </DataContext> */}
 			</AuthContextProvider>
 
+				{/* <DataContext> */}
+				{/* </DataContext> */}
+					{/* <MyFridge /> */}
+			{/* <Recipes />	 */}
 
 			{/* <Recipespage /> */}
 			{/* <MyRecipes /> */}

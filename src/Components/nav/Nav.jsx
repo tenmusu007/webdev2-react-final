@@ -6,11 +6,14 @@ import { AuthContext } from './AuthContext';
 import "./nav.css";
 
 const Nav = () => {
-   const { user, logOut, googleSignIn } = useContext(AuthContext);
+   const { user, logOut, googleSignIn, count, setCount, isLogin, setIsLogin } = useContext(AuthContext);
+   console.log("Auth", user);
 
    const handleSignOut = async () => {
       try {
          await logOut();
+         await setCount(count + 1)
+         await setIsLogin(!isLogin)
       } catch(error) {
          console.log(error);
       }
@@ -20,6 +23,8 @@ const Nav = () => {
       // const {googleSignIn} = UserAuth();
       try {
          await googleSignIn();
+         await setCount(count + 1)
+         await setIsLogin(!isLogin)
       } catch (error) {
          console.log(error);
       }
