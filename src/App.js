@@ -1,7 +1,6 @@
 import MyFridge from "./Components/MyFridgeList/MyFridge";
 import Test from "./Backend/test";
 import "./App.css";
-import Recipes from "./Components/Recipes";
 import MyRecipes from "./Components/RecipeCard/MyRecipesBar(RightSection)/MyRecipes";
 import Recipespage from "./Components/RecipeCard/MidSection/Recipespage";
 import { AuthContextProvider } from "./Components/nav/AuthContext";
@@ -16,17 +15,17 @@ function App() {
 	return (
 		<div className='App'>
 			<AuthContextProvider>
-					<DataProvider>
-						<Router>
-							<Nav />
-						</Router>
-					<Recipe/>
-					</DataProvider>
+				<DataProvider>
+					<Router>
+						<Nav />
+					</Router>
+					<Recipe />
+				</DataProvider>
 			</AuthContextProvider>
 
-				{/* <DataContext> */}
-				{/* </DataContext> */}
-					{/* <MyFridge /> */}
+			{/* <DataContext> */}
+			{/* </DataContext> */}
+			{/* <MyFridge /> */}
 			{/* <Recipes />	 */}
 
 			{/* <Recipespage /> */}
@@ -35,7 +34,6 @@ function App() {
 			{/* <Recipespage /> */}
 		</div>
 	);
-
 }
 
 export default App;

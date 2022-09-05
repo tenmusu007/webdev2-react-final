@@ -1,8 +1,10 @@
 import fakeData from "./fakeData";
 import fakeDataFridge from "./fakeDataFridge";
-import React, { useEffect, useState } from "react";
-// import axios from "axios";
+import React, { useEffect, useState,useContext } from "react";
+import axios from "axios";
 import "./Recipespage.css";
+import { DataContext } from "../../UseContext/DataContext";
+import { AuthContext } from "../../nav/AuthContext"
 import MyRecipes from "../MyRecipesBar(RightSection)/MyRecipes";
 // import { MidPart } from "./Recipespage.styled";
 
@@ -13,11 +15,16 @@ const Recipespage = () => {
   const [checkBoxValue, setCheckBoxValue] = useState([]);
   // const [checked, setChecked] = useState(false);
   const [recipes, setRecipes] = useState([]);
-
+  const { recipeAddFireBase, user, setUser } = useContext(DataContext)
+  const { userData, isLogin } = useContext(AuthContext);
+  console.log(userData);
   const handleCheckbox = (food) => {
+    console.log('working');
     if (!checkBoxValue.includes(food)) {
+      console.log('入ってない');
       setCheckBoxValue((prev) => [...prev, food]);
-    }else{
+    } else {
+      console.log('入ってる');
       let newRecipes = checkBoxValue.filter((item, index) => {
         if (item !== food) {
           return item;
@@ -26,47 +33,51 @@ const Recipespage = () => {
       setCheckBoxValue(newRecipes);
     }
   };
-
+  useEffect(() => {
+    setRecipes(userData.data.myrecipe)
+    setCheckBox(userData.data.myfridge);
+  }, [userData])
   useEffect(() => {
     // console.log(checkBoxValue.toString());
     getData(checkBoxValue.toString())
+    // setRecipes(userData.data.myrecipe)
   }, [checkBoxValue])
 
   const getData = (checkboxElements) => {
-    // console.log(process.env.REACT_APP_APIKEY)
     setCards(fakeData);
-    // axios
-    //   .get(
-    //     `https://api.spoonacular.com/recipes/complexSearch?query=${checkboxElements}&number=50&apiKey=fa8a9d46ee714e2bbd0da09419e280e6`
-    //   )
-    //   .then(function (response) {
-    //     // handle success
-    //     console.log(response.data.results);
-    //     console.log(response.data);
-    //     setCards(response.data.results);
-    //   })
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log(error);
-    //   })
-    //   .then(function () {
-    //     // always executed
-    //   });
+    axios
+      .get(
+        `https://api.spoonacular.com/recipes/complexSearch?query=${checkboxElements}&number=50&apiKey=${process.env.REACT_APP_FOODAPIKEY}`
+      )
+      .then(function (response) {
+        // handle success
+        // console.log(response.data.results);
+        // console.log(response.data);
+        setCards(response.data.results);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
   };
 
-  const getFridgeItems = () => {
-    setCheckBox(fakeDataFridge);
-  };
 
-  useEffect(() => {
-    getData();
-    getFridgeItems();
-  }, []);
 
   const handleToAdd = (item) => {
-    // update to array and add item to array
-    if (!recipes.includes(item)) {
-      setRecipes((prev) => [...prev, item]);
+
+    if (!userData.data.myrecipe.includes(item)) {
+      // setRecipes((prev) => [...prev, item]);
+      console.log([
+        ...userData.data.myrecipe, item
+      ]);
+      recipeAddFireBase([
+        ...userData.data.myrecipe, item
+      ])
+      setRecipes([...recipes, item])
+
     }
   };
 
@@ -77,10 +88,9 @@ const Recipespage = () => {
         return item;
       }
     });
-
+    recipeAddFireBase(newRecipes)
     setRecipes(newRecipes);
   };
-
   return (
     <>
     <div className="all_part_u all_div">
@@ -97,20 +107,10 @@ const Recipespage = () => {
         </div>
         <div className="all_div">
           <form>
-          {/* <form method="post" action="/Tests/Post/">       */}
-    {/* <fieldset>      
-        <legend>What is Your Favorite Pet?</legend>      
-        <input type="checkbox" name="favorite_pet" value="Cats">Cats<br>      
-        <input type="checkbox" name="favorite_pet" value="Dogs">Dogs<br>      
-        <input type="checkbox" name="favorite_pet" value="Birds">Birds<br>      
-        <br>      
-        <input type="submit" value="Submit now" />      
-    </fieldset>      
-</form> */}
           {checkBox &&
             checkBox.map((foods, i) => {
               return (
-                <>
+                <div key={i}>
                   <input
                     key={i}
                     className="check_boxes"
@@ -120,11 +120,10 @@ const Recipespage = () => {
                     name={foods.name}
                     value={foods.name}
                   />
-                  <label className=".labels" for={foods.name}>
-                    {" "}
-                    {foods.name}{" "}
+                  <label className=".labels" htmlFor={foods.name}>
+                    {foods.name}
                   </label>
-                </>
+                </div>
               );
             })}
             </form>
@@ -161,7 +160,7 @@ const Recipespage = () => {
         </div>
       </div>
       <div className="right_part_u">
-        <MyRecipes recipes={recipes} deletingRecipe={deletingRecipe} />
+          <MyRecipes recipes={userData} deletingRecipe={deletingRecipe} />
       </div>
       </div>
     </>

@@ -11,7 +11,6 @@ function Recipe() {
 		<>
 			<MyFridge />
 			<Recipespage />
-			<MyRecipes />
 		</>
 	);
 }

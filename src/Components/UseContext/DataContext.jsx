@@ -70,7 +70,7 @@ export const DataProvider = ({children}) => {
     // fetchRecipe();
     fetch();
     // fetchUsers();
-  }, [count,userData.docId]);
+  }, [userData.docId]);
   // console.log("userData", getUser);
   // console.log("RecipeData", getRecipe);
   // console.log("effect", user);
@@ -110,14 +110,15 @@ export const DataProvider = ({children}) => {
         userName: userData.data.userName,
         itemToBuy: [...userData.data.itemToBuy],
         myfridge: [...userData.data.myfridge],
-        myrecipe: [recipe],
+        myrecipe: [...recipe],
       });
+      await setCount(count + 1)
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
   const fridgeAddFireBase = async (item) => {
-    console.log("contxt",item);
+    // console.log("contxt",item);
     // const q = query(collection(db, "recipe"), where("id", "==", userData.data.id));
     // const querySnapshot = await getDocs(q);
     // const newArr = [];
@@ -136,7 +137,7 @@ export const DataProvider = ({children}) => {
         myrecipe: [...userData.data.myrecipe],
       });
       await   setCount(count + 1)
-      console.log("counted");
+      // console.log("counted");
     } catch (e) {
       console.error("Error adding document: ", e);
     }

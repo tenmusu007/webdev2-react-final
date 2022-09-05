@@ -7,24 +7,22 @@ import "./nav.css";
 
 const Nav = () => {
    const { user, logOut, googleSignIn, count, setCount, isLogin, setIsLogin } = useContext(AuthContext);
-   console.log("Auth", user);
 
    const handleSignOut = async () => {
       try {
          await logOut();
          await setCount(count + 1)
-         await setIsLogin(!isLogin)
+         await setIsLogin(false)
       } catch(error) {
          console.log(error);
       }
    }
 
    const handleSignIn = async () => {
-      // const {googleSignIn} = UserAuth();
       try {
          await googleSignIn();
          await setCount(count + 1)
-         await setIsLogin(!isLogin)
+         await setIsLogin(true)
       } catch (error) {
          console.log(error);
       }

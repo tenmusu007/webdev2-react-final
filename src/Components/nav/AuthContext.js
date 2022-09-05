@@ -25,17 +25,7 @@ export const AuthContextProvider = ({ children }) => {
 	const [user, setUser] = useState({});
 	const [isLogin, setIsLogin] = useState(false);
 	const [count, setCount] = useState(0);
-	const [fridgeList, setFridgeList] = useState({
-		data: {
-			docId: "",
-			id: "",
-			itemToBuy: [],
-			myfridge: [],
-			myrecipe: [],
-		},
-		docId: "",
-	});
-
+	console.log(count);
 	const [userData, setUserData] = useState({
 		data: {
 			docId: "",
@@ -46,35 +36,24 @@ export const AuthContextProvider = ({ children }) => {
 		},
 		docId: "",
 	});
-	// console.log(user);
+	console.log("auth", userData);
 	const provider = new GoogleAuthProvider();
 	const googleSignIn = () => {
-		// setIsLogin(!isLogin);
 		signInWithPopup(auth, provider);
 	};
 
 	const logOut = () => {
 		setCount(count + 1);
-		setFridgeList({
-			data: {
-				docId: "",
-				id: "",
-				itemToBuy: [],
-				myfridge: [],
-				myrecipe: [],
-			},
-			docId: "",
-		});
-		// setIsLogin(!isLogin);
 		signOut(auth);
 	};
 
 	useEffect(() => {
-		console.log("effect working AuthContext");
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+			console.log(currentUser);
 			if (!currentUser) {
+				console.log("ログインしてへんわ");
 				setUser(null);
-				setFridgeList({
+				setUserData({
 					data: {
 						docId: "",
 						id: "",
@@ -85,22 +64,40 @@ export const AuthContextProvider = ({ children }) => {
 					docId: "",
 				});
 			} else {
+				console.log("ログインしてまっせ");
 				setUser(currentUser);
 				const fetch = async () => {
 					const q = query(
 						collection(db, "recipe"),
 						where("id", "==", currentUser.uid)
 					);
-					// setIsLogin(!isLogin);
-					// console.log(q);
 					const newArr = [];
 					const querySnapshot = await getDocs(q);
 					querySnapshot.forEach((doc) => {
 						// console.log(doc.data());
 						setUserData({ data: doc.data(), docId: doc.id });
-						setFridgeList({ data: doc.data(), docId: doc.id });
 						newArr.push(doc.data());
 					});
+					if (newArr.length === 0) {
+						const docRefRecipe = await addDoc(collection(db, "recipe"), {
+							id: currentUser.uid,
+							userName: currentUser.displayName,
+							itemToBuy: [],
+							myfridge: [],
+							myrecipe: [],
+						});
+							const q = query(
+								collection(db, "recipe"),
+								where("id", "==", currentUser.uid)
+							);
+						const querySnapshot = await getDocs(q);
+						querySnapshot.forEach((doc) => {
+							// console.log(doc.data());
+							setUserData({ data: doc.data(), docId: doc.id });
+							newArr.push(doc.data());
+						});
+						setCount(count + 1);
+					}
 				};
 				fetch();
 			}
@@ -118,8 +115,6 @@ export const AuthContextProvider = ({ children }) => {
 				userData,
 				count,
 				setCount,
-				fridgeList,
-				setFridgeList,
 				isLogin,
 				setIsLogin,
 			}}
