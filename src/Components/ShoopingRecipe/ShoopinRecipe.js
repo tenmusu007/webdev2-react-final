@@ -338,18 +338,18 @@ const ShoopinRecipe = () => {
 	// console.log(recipeData);
 	// console.log(userData);
 	useEffect(() => {
-		// const RecipeId = userData.data;
-		// console.log(RecipeId);
-		// for (let i = 0; i < userData.data.myrecipe.length; i++) {
-		//   console.log(userData.data.myrecipe[i].id);
-		// 	axios
-		// 		.get(
-		// 			`
-		// 	https://api.spoonacular.com/recipes/${userData.data.myrecipe[i].id}/information?apiKey=${process.env.REACT_APP_FOODAPIKEY}&includeNutrition=false
-		// 	`
-		// 		)
-		// 		.then((res) => setRecipeData([res.data]));
-		// }
+		const RecipeId = userData.data;
+		console.log(RecipeId);
+		for (let i = 0; i < userData.data.myrecipe.length; i++) {
+		  console.log(userData.data.myrecipe[i].id);
+			axios
+				.get(
+					`
+			https://api.spoonacular.com/recipes/${userData.data.myrecipe[i].id}/information?apiKey=${process.env.REACT_APP_FOODAPIKEY}&includeNutrition=false
+			`
+				)
+				.then((res) => setRecipeData([...recipeData,res.data]));
+		}
 	}, [userData]);
 	const [drop, setDrop] = useState(false);
 	const handleDrop = () => {

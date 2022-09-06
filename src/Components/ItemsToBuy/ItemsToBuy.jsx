@@ -55,9 +55,7 @@ export default function ItemsToBuy() {
 
 	
 	useEffect(() => {
-		console.log("useeffect 動いてもうてるがな");
 		setFridgeList(userData.data.myfridge)
-		console.log("effect firdge", userData);
 	}, [userData])
 	
 	useEffect(() => {

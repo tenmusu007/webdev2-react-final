@@ -34,12 +34,9 @@ const Recipespage = () => {
   // console.log(userData);
   // console.log(checkBox);
   const handleCheckbox = (food) => {
-    // console.log('working');
     if (!checkBoxValue.includes(food)) {
-      console.log('入ってない');
       setCheckBoxValue((prev) => [...prev, food]);
     } else {
-      // console.log('入ってる');
       let newRecipes = checkBoxValue.filter((item, index) => {
         if (item !== food) {
           return item;
@@ -65,9 +62,6 @@ const Recipespage = () => {
         `https://api.spoonacular.com/recipes/complexSearch?query=${checkboxElements}&number=50&apiKey=${process.env.REACT_APP_FOODAPIKEY}`
       )
       .then(function (response) {
-        // handle success
-        // console.log(response.data.results);
-        // console.log(response.data);
         setCards(response.data.results);
       })
       .catch(function (error) {
@@ -84,7 +78,6 @@ const Recipespage = () => {
   const handleToAdd = (item) => {
 
     if (!userData.data.myrecipe.includes(item)) {
-      // setRecipes((prev) => [...prev, item]);
       console.log([
         ...userData.data.myrecipe, item
       ]);

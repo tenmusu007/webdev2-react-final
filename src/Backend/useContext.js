@@ -52,7 +52,7 @@ export const DataContext = ({ children }) => {
 			const newArr = [];
 			const querySnapshot = await getDocs(q);
 			querySnapshot.forEach((doc) => {
-				console.log(doc.data());
+				// console.log(doc.data());
 				setUser({ data: doc.data(), docId: doc.id });
 				newArr.push(doc.data());
 			});

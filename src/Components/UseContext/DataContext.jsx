@@ -62,7 +62,6 @@ export const DataProvider = ({ children }) => {
 
 
   const recipeAddFireBase = async (recipe) => {
-    console.log("recipe", recipe);
 
     try {
       const docRef = await setDoc(doc(db, "recipe", `${userData.docId}`), {
