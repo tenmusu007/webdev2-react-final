@@ -17,8 +17,7 @@ function App() {
         <Router>
           <Nav />
         </Router>
-      </AuthContextProvider>
-      <Recipespage />
+      </AuthContextProvider> 
       {/* <MyRecipes /> */}
       {/* <Test/> */}
       {/* <Recipespage /> */}

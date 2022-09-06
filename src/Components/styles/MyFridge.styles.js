@@ -8,7 +8,7 @@ export const Fridge = styled.div`
     border-radius: 10px;
     border: 2px solid black;
     min-height: 200px;
-    }
+    
 `;
 
 export const ListName = styled.h2`
@@ -26,6 +26,7 @@ export const Search = styled.input`
     color: black;
     ::placeholder {
         color: gray;
+    }
 `;
 
 export const Add = styled.input`
