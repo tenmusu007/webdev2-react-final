@@ -5,14 +5,10 @@ export const Fridge = styled.div`
     margin-left:5px;
     padding: 10px;
     max-width: 250px;
+    width: 250px;
     border-radius: 10px;
     border: 2px solid black;
     min-height: 200px;
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> c33d39c51e1c14484b75f27f99cbb4512adfbbe5
 `;
 
 export const ListName = styled.h2`
