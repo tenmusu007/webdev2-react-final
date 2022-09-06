@@ -92,7 +92,7 @@ export default function MyFridge() {
 					onChange={(e) => handleOnChange(e)}
 				/>
 				<Add type="button" value="Add" onClick={() => sendToFridgeList()} />
-				<WhisperUl id="whisper">
+				<WhisperUl b={autocomplete.length ? 1 : 0} id="whisper">
 					{autocomplete.map((item, i) => (
 						<WhisperDiv
 							onClick={() => temporaryList(item.id, item.name, item.image)}

@@ -1,12 +1,26 @@
-import fakeData from "./fakeData";
+// import fakeData from "./fakeData";
 import fakeDataFridge from "./fakeDataFridge";
 import React, { useEffect, useState,useContext } from "react";
 import axios from "axios";
-import "./Recipespage.css";
+import fakeData from "./fakeData"
+// import "./Recipespage.css";
 import { DataContext } from "../../UseContext/DataContext";
 import { AuthContext } from "../../nav/AuthContext"
 import MyRecipes from "../MyRecipesBar(RightSection)/MyRecipes";
-// import { MidPart } from "./Recipespage.styled";
+// import styled from "styled-components";
+
+import {
+  All_part_u,
+  All_div,
+  Search_bar,
+  Check_boxes,
+  Labels,
+  Cards,
+  Card,
+  Recipe_imgs,
+  Card_buttons,
+  Right_part_u
+} from "../../styles/Recipespage.styled";
 
 const Recipespage = () => {
   const [cards, setCards] = useState();
@@ -45,7 +59,7 @@ const Recipespage = () => {
   }, [checkBoxValue])
 
   const getData = (checkboxElements) => {
-    // setCards(fakeData);
+    setCards(fakeData);
     axios
       .get(
         `https://api.spoonacular.com/recipes/complexSearch?query=${checkboxElements}&number=50&apiKey=${process.env.REACT_APP_FOODAPIKEY}`
@@ -93,20 +107,19 @@ const Recipespage = () => {
     setRecipes(newRecipes);
   };
   return (
-    <>
-    <div className="all_part_u all_div">
-      <div className="all_div">
-        <div className="all_div">
-          <input
-            className="search_bar"
-            type="text"
-            placeholder="Search.."
-            onChange={(event) => {
-              setSearchTerm(event.target.value);
-            }}
-          />
-        </div>
-        <div className="all_div">
+      <All_part_u>
+        <All_div>
+          <All_div>
+            <Search_bar
+              className="search_bar"
+              type="text"
+              placeholder="Search.."
+              onChange={(event) => {
+                setSearchTerm(event.target.value);
+              }}
+            />
+          </All_div>
+          <All_div>
           <form>
               {isLogin && checkBox &&
             checkBox.map((foods, i) => {
@@ -128,8 +141,8 @@ const Recipespage = () => {
               );
             })}
             </form>
-        </div>
-        <div className="cards all_div">
+          </All_div>
+        <Cards>
           {cards &&
             cards
               .filter((item) => {
@@ -143,28 +156,24 @@ const Recipespage = () => {
               })
               .map((item, index) => {
                 return (
-                  <div key={index} className="card all_div">
-                    <p>{item.title}</p>
-                    <img className="recipe_imgs" src={item.image} alt="" />
-                    <div className="all_div">
-                      <button className="card_buttons">More</button>
-                      <button
-                        className="card_buttons"
-                        onClick={() => handleToAdd(item)}
-                      >
-                        Add
-                      </button>
-                    </div>
-                  </div>
+                    <Card key={index}>
+                      <p>{item.title}</p>
+                      <Recipe_imgs src={item.image} alt="" />
+                      <All_div>
+                        <Card_buttons>More</Card_buttons>
+                        <Card_buttons onClick={() => handleToAdd(item)}>
+                          Add
+                        </Card_buttons>
+                      </All_div>
+                    </Card>
                 );
               })}
-        </div>
-      </div>
-      <div className="right_part_u">
+          </Cards>
+      </All_div>
+        <Right_part_u>
           <MyRecipes recipes={userData} deletingRecipe={deletingRecipe} />
-      </div>
-      </div>
-    </>
+        </Right_part_u>
+      </All_part_u>
   );
 };
 
