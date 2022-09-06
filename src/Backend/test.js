@@ -12,18 +12,9 @@ import {
 	setDoc,
 } from "firebase/firestore";
 import { db } from "./firebase";
-<<<<<<< HEAD
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { dataContext } from "./useContext";
-=======
-import {
-	getAuth,
-	signInWithPopup,
-	GoogleAuthProvider,
-	onAuthStateChanged,
-} from "firebase/auth";
-import { async } from "@firebase/util";
->>>>>>> 9a515dc051a7e9ba81242c60386ad936b49ce664
+
 
 const provider = new GoogleAuthProvider();
 
@@ -43,7 +34,6 @@ const StyledTest = styled.section`
 const Test = () => {
 	const {data} = useContext(dataContext)
 	const auth = getAuth();
-<<<<<<< HEAD
 	const { user, setUser } = useContext(dataContext);
 	// const [user, setUser] = useState({
 	// 	data:[],
@@ -78,49 +68,6 @@ const Test = () => {
 	// console.log("userData", getUser);
 	// console.log("RecipeData", getRecipe);
 	console.log("user", user);
-=======
-	const [user, setUser] = useState({
-		data: [],
-		docId: "",
-	});
-	const [getUser, setGetUser] = useState([]);
-	const [getRecipe, setGetRecipe] = useState([]);
-	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-			// setUser(currentUser);
-			console.log("test", currentUser);
-			const fetch = async () => {
-				const q = query(
-					collection(db, "recipe"),
-					where("id", "==", currentUser.uid)
-				);
-				console.log(q);
-				const newArr = [];
-				const querySnapshot = await getDocs(q);
-				querySnapshot.forEach((doc) => {
-					// console.log(doc.data());
-					setUser({ data: doc.data(), docId: doc.id });
-					newArr.push(doc.data());
-				});
-			};
-			fetch();
-		});
-		const fetchRecipe = async () => {
-			const querySnapshot = await getDocs(collection(db, "recipe"));
-			const newArr = [];
-			querySnapshot.forEach((doc) => {
-				newArr.push({ data: doc.data(), docId: doc.id });
-			});
-			setGetRecipe(newArr);
-		};
-		unsubscribe();
-		fetchRecipe();
-		// fetchUsers();
-	}, []);
-	// console.log("userData", getUser);
-	// console.log("RecipeData", getRecipe);
-	// console.log("user", user);
->>>>>>> 9a515dc051a7e9ba81242c60386ad936b49ce664
 	const googleAthu = () => {
 		// signInWithRedirect(auth, provider)
 		signInWithPopup(auth, provider)
@@ -182,7 +129,6 @@ const Test = () => {
 			});
 	};
 
-<<<<<<< HEAD
 	// const [fridge, setFridge] = useState([]);
 	// const [recipe, setRecipe] = useState([]);
 	// const fridgeRef = useRef("");
@@ -200,94 +146,7 @@ const Test = () => {
 	// 	setRecipe([...recipe, item]);
 	// 	recipeAddFireBase(item);
 	// };
-=======
-	const [fridge, setFridge] = useState([]);
-	const [recipe, setRecipe] = useState([]);
-	const fridgeRef = useRef("");
-	const recipegeRef = useRef("");
-	const handleSubmitFridge = (e) => {
-		e.preventDefault();
-		const item = fridgeRef.current.value;
-		setFridge([...fridge, item]);
-		fridgeAddFireBase(item);
-	};
-	const handleSubmitRecipe = (e) => {
-		e.preventDefault();
-		const item = recipegeRef.current.value;
-		setRecipe([...recipe, item]);
-		recipeAddFireBase(item);
-	};
->>>>>>> 9a515dc051a7e9ba81242c60386ad936b49ce664
-
-	// const recipeAddFireBase = async (recipe) => {
-	// 	console.log("recipe", recipe);
-	// 	const q = query(collection(db, "recipe"), where("id", "==", user.data.id));
-	// 	console.log(q);
-	// 	const querySnapshot = await getDocs(q);
-	// 	const newArr = [];
-	// 	querySnapshot.forEach((doc) => {
-	// 		// doc.data() is never undefined for query doc snapshots
-	// 		newArr.push(doc.data());
-	// 		console.log(doc.id, " => ", doc.data());
-	// 	});
-	// 	console.log(newArr);
-	// 	try {
-	// 		const docRef = await setDoc(doc(db, "recipe", `${user.docId}`), {
-	// 			id: user.data.id,
-	// 			docId: user.docId,
-	// 			userName: user.data.userName,
-	// 			itemToBuy: [...user.data.itemToBuy],
-	// 			myfridge: [...user.data.myfridge],
-	// 			myrecipe: [recipe],
-	// 		});
-	// 	} catch (e) {
-	// 		console.error("Error adding document: ", e);
-	// 	}
-	// };
-	// const fridgeAddFireBase = async (item) => {
-	// 	const q = query(collection(db, "recipe"), where("id", "==", user.data.id));
-	// 	const querySnapshot = await getDocs(q);
-	// 	const newArr = [];
-	// 	querySnapshot.forEach((doc) => {
-	// 		// doc.data() is never undefined for query doc snapshots
-	// 		newArr.push(doc.data());
-	// 		console.log(doc.id, " => ", doc.data());
-	// 	});
-	// 	try {
-	// 		const docRef = await setDoc(doc(db, "recipe", `${user.docId}`), {
-	// 			id: user.data.id,
-	// 			docId: user.docId,
-	// 			userName: user.data.userName,
-	// 			itemToBuy: [...user.data.itemToBuy],
-	// 			myfridge: [item],
-	// 			myrecipe: [...user.data.myrecipe],
-	// 		});
-	// 	} catch (e) {
-	// 		console.error("Error adding document: ", e);
-	// 	}
-	// };
-	// const toBuyAddFireBase = async (item) => {
-	// 	const q = query(collection(db, "recipe"), where("id", "==", user.data.id));
-	// 	console.log(q);
-	// 	const querySnapshot = await getDocs(q);
-	// 	const newArr = [];
-	// 	querySnapshot.forEach((doc) => {
-	// 		newArr.push(doc.data());
-	// 		console.log(doc.id, " => ", doc.data());
-	// 	});
-	// 	try {
-	// 		const docRef = await setDoc(doc(db, "recipe", `${user.docId}`), {
-	// 			id: user.data.id,
-	// 			docId: user.docId,
-	// 			userName: user.data.userName,
-	// 			itemToBuy: [item],
-	// 			myfridge: [...user.data.myfridge],
-	// 			myrecipe: [...user.data.myrecipe],
-	// 		});
-	// 	} catch (e) {
-	// 		console.error("Error adding document: ", e);
-	// 	}
-	// };
+// >>>>>>> 9813dde14e2c71548630b2a36dc2c78724e3ef36
 	return (
 		<StyledTest>
 			<div className='container'>
