@@ -5,9 +5,10 @@ import { DataContext } from "../UseContext/DataContext";
 import { AuthContext } from "../nav/AuthContext"
 
 
-import { Add, Fridge, IngredientDiv, IngredientImg, IngredientName, ListDiv, ListName, RemoveBtn, Search, WhisperDiv, WhisperUl, } from "../styles/MyFridge.styles";
+import { Add, Fridge, ListDiv, ListName, RemoveBtn, Search, WhisperDiv, WhisperUl, } from "../styles/MyFridge.styles";
+import {RecipeTitle, IngredientDiv, IngredientImg, IngredientName} from "../styles/ItemsToBuy.styles";
 
-export default function MyFridge() {
+export default function ItemsToBuy() {
 	const PicUrl = "https://spoonacular.com/cdn/ingredients_100x100/"
 	const [query, setQuery] = useState("");
 	const [autocomplete, setAutocomplete] = useState([]);
@@ -17,6 +18,7 @@ export default function MyFridge() {
 	const [fridgeList, setFridgeList] = useState([]);
 	const { fridgeAddFireBase, user, setUser } = useContext(DataContext)
 	const { userData, count, isLogin} = useContext(AuthContext);
+   const [recipes, setRecipes] = useState([]);
 	// console.log("data", userData.data.myfridgeta);
 	useEffect(() => {
 		const loadIngredients = async () => {
@@ -28,12 +30,35 @@ export default function MyFridge() {
 		loadIngredients();
 	}, [query]);
 
+   useEffect(() => {
+      // setRecipes([]);
+      const recipesList = userData.data.myrecipe;
+      let idRecipes = "";
+      console.log("fridgeList: ", fridgeList);
+      recipesList.forEach((item) => {
+         idRecipes = idRecipes + "," + item.id;
+      })
+      console.log(idRecipes);
+
+      const loadRecipes = async () => {
+         const responseRecipes = await axios.get(
+            `https://api.spoonacular.com/recipes/informationBulk?apiKey=${process.env.REACT_APP_FOODAPIKEY}&ids=${idRecipes}`
+         );
+         // recipes.push(responseRecipes.data);
+         console.log(`https://api.spoonacular.com/recipes/informationBulk?apiKey=${process.env.REACT_APP_FOODAPIKEY}&ids=${idRecipes}`);
+         setRecipes(responseRecipes.data);
+         // console.log(responseRecipes.data);
+         console.log(recipes);
+      };
+      loadRecipes();
+   }, [userData.data.myrecipe]);
+
 	
-	// useEffect(() => {
-	// 	console.log("useeffect 動いてもうてるがな");
-	// 	setFridgeList(userData.data.myfridge)
-	// 	console.log("effect firdge", userData);
-	// }, [userData])
+	useEffect(() => {
+		console.log("useeffect 動いてもうてるがな");
+		setFridgeList(userData.data.myfridge)
+		console.log("effect firdge", userData);
+	}, [userData])
 	
 	useEffect(() => {
 		// console.log("count reset");
@@ -79,32 +104,39 @@ export default function MyFridge() {
 		setFridgeList([...firebaseFridgeList])
 	};
 
+
 	return (
 		<Fridge>
-			<ListName>My Fridge</ListName>
-			<form>
-				<Search
-					type="text"
-					id="searchInput"
-					list="pol"
-					autoComplete="off"
-					placeholder="Search"
-					onChange={(e) => handleOnChange(e)}
-				/>
-				<Add type="button" value="Add" onClick={() => sendToFridgeList()} />
-				<WhisperUl b={autocomplete.length ? 1 : 0} id="whisper">
-					{autocomplete.map((item, i) => (
-						<WhisperDiv
-							onClick={() => temporaryList(item.id, item.name, item.image)}
-							key={item.id}
-						>
-							{item.name}
-						</WhisperDiv>
-					))}
-				</WhisperUl>
-			</form>
+			<ListName>Items To Buy</ListName>
+
+         { isLogin && userData ? recipes.map((item) => (
+               <div>
+                  <RecipeTitle key={item.id}>
+                     {item.title}
+                  </RecipeTitle>
+                  { item.extendedIngredients.map((itemIngredientRecipe) => (
+                     !fridgeList.find((fridgeItem) => fridgeItem.id === itemIngredientRecipe.id ) ?
+                        <IngredientDiv key={item.id + "-" + itemIngredientRecipe.id}>
+                           <IngredientImg
+                              alt={itemIngredientRecipe.name}
+                              src={
+                                 "https://spoonacular.com/cdn/ingredients_100x100/" + itemIngredientRecipe.image
+                              }
+                           />
+                           <IngredientName> {itemIngredientRecipe.name} </IngredientName>
+                        </IngredientDiv> : ""
+                     
+                  ))}
+               </div>
+               )) : ""}
+
 			<ListDiv>
-				{isLogin && userData ? (userData.data.myfridge.map((item, i) => (
+            {/* {fillItemsToBuy()} */}
+            
+            
+            {/* { console.log("Items to Buy", userData.data.myrecipe.title)} */}
+
+				{/* {isLogin && userData ? (userData.data.myfridge.map((item, i) => (
 					<IngredientDiv key={item.id}>
 						<IngredientImg
 							alt={item.name}
@@ -113,10 +145,6 @@ export default function MyFridge() {
 							}
 						/>
 						<IngredientName> {item.name} </IngredientName>
-						<RemoveBtn onClick={() => deleteFromFridgeList(item.id)}>
-							{" "}
-							Remove{" "}
-						</RemoveBtn>
 					</IngredientDiv>
 				))) : (fridgeList.map((item, i) => (
 					<IngredientDiv key={item.id}>
@@ -127,12 +155,8 @@ export default function MyFridge() {
 							}
 						/>
 						<IngredientName> {item.name} </IngredientName>
-						<RemoveBtn onClick={() => deleteFromFridgeList(item.id)}>
-							{" "}
-							Remove{" "}
-						</RemoveBtn>
 					</IngredientDiv>
-				))) }
+				))) } */}
 			</ListDiv>
 		</Fridge>
 	);

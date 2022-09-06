@@ -1,7 +1,11 @@
 // import fakeData from "./fakeData";
 import fakeDataFridge from "./fakeDataFridge";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import axios from "axios";
+import fakeData from "./fakeData"
+// import "./Recipespage.css";
+import { DataContext } from "../../UseContext/DataContext";
+import { AuthContext } from "../../nav/AuthContext"
 import MyRecipes from "../MyRecipesBar(RightSection)/MyRecipes";
 // import styled from "styled-components";
 
@@ -25,11 +29,17 @@ const Recipespage = () => {
   const [checkBoxValue, setCheckBoxValue] = useState([]);
   // const [checked, setChecked] = useState(false);
   const [recipes, setRecipes] = useState([]);
-
+  const { recipeAddFireBase, user, setUser } = useContext(DataContext)
+  const { userData, isLogin } = useContext(AuthContext);
+  // console.log(userData);
+  // console.log(checkBox);
   const handleCheckbox = (food) => {
+    // console.log('working');
     if (!checkBoxValue.includes(food)) {
+      console.log('入ってない');
       setCheckBoxValue((prev) => [...prev, food]);
     } else {
+      // console.log('入ってる');
       let newRecipes = checkBoxValue.filter((item, index) => {
         if (item !== food) {
           return item;
@@ -38,23 +48,26 @@ const Recipespage = () => {
       setCheckBoxValue(newRecipes);
     }
   };
-
+  useEffect(() => {
+    setRecipes(userData.data.myrecipe)
+    setCheckBox(userData.data.myfridge);
+  }, [userData])
   useEffect(() => {
     // console.log(checkBoxValue.toString());
-    getData(checkBoxValue.toString());
-  }, [checkBoxValue]);
+    getData(checkBoxValue.toString())
+    // setRecipes(userData.data.myrecipe)
+  }, [checkBoxValue])
 
   const getData = (checkboxElements) => {
-    // console.log(process.env.REACT_APP_APIKEY)
-    // setCards(fakeData);
+    setCards(fakeData);
     axios
       .get(
-        `https://api.spoonacular.com/recipes/complexSearch?query=${checkboxElements}&number=50&apiKey=${process.env.REACT_APP_APIKEY_SPOONCULAR}`
+        `https://api.spoonacular.com/recipes/complexSearch?query=${checkboxElements}&number=50&apiKey=${process.env.REACT_APP_FOODAPIKEY}`
       )
       .then(function (response) {
         // handle success
-        console.log(response.data.results);
-        console.log(response.data);
+        // console.log(response.data.results);
+        // console.log(response.data);
         setCards(response.data.results);
       })
       .catch(function (error) {
@@ -66,35 +79,34 @@ const Recipespage = () => {
       });
   };
 
-  const getFridgeItems = () => {
-    setCheckBox(fakeDataFridge);
-  };
 
-  useEffect(() => {
-    getData();
-    getFridgeItems();
-  }, []);
 
   const handleToAdd = (item) => {
-    // update to array and add item to array
-    if (!recipes.includes(item)) {
-      setRecipes((prev) => [...prev, item]);
+
+    if (!userData.data.myrecipe.includes(item)) {
+      // setRecipes((prev) => [...prev, item]);
+      console.log([
+        ...userData.data.myrecipe, item
+      ]);
+      recipeAddFireBase([
+        ...userData.data.myrecipe, item
+      ])
+      setRecipes([...recipes, item])
+
     }
   };
 
   const deletingRecipe = (id) => {
-    console.log(id);
+    // console.log(id);
     let newRecipes = recipes.filter((item, index) => {
       if (item.id !== id) {
         return item;
       }
     });
-
+    recipeAddFireBase(newRecipes)
     setRecipes(newRecipes);
   };
-
   return (
-    <>
       <All_part_u>
         <All_div>
           <All_div>
@@ -108,42 +120,42 @@ const Recipespage = () => {
             />
           </All_div>
           <All_div>
-            <form>
-              {checkBox &&
-                checkBox.map((foods, i) => {
-                  return (
-                    <>
-                      <Check_boxes
-                        className="check_boxes"
-                        onChange={() => handleCheckbox(foods.name)}
-                        type="checkbox"
-                        id={foods.name}
-                        name={foods.name}
-                        value={foods.name}
-                      />
-                      <Labels className="labels" for={foods.name}>
-                        {" "}
-                        {foods.name}{" "}
-                      </Labels>
-                    </>
-                  );
-                })}
+          <form>
+              {isLogin && checkBox &&
+            checkBox.map((foods, i) => {
+              return (
+                <div key={i}>
+                  <input
+                    key={i}
+                    className="check_boxes"
+                    onChange={() => handleCheckbox(foods.name)}
+                    type="checkbox"
+                    id={foods.name}
+                    name={foods.name}
+                    value={foods.name}
+                  />
+                  <label className=".labels" htmlFor={foods.name}>
+                    {foods.name}
+                  </label>
+                </div>
+              );
+            })}
             </form>
           </All_div>
-          <Cards>
-            {cards &&
-              cards
-                .filter((item) => {
-                  if (searchTerm === "") {
-                    return item;
-                  } else if (
-                    item.title.toLowerCase().includes(searchTerm.toLowerCase())
-                  ) {
-                    return item;
-                  }
-                })
-                .map((item, index) => {
-                  return (
+        <Cards>
+          {cards &&
+            cards
+              .filter((item) => {
+                if (searchTerm === "") {
+                  return item;
+                } else if (
+                  item.title.toLowerCase().includes(searchTerm.toLowerCase())
+                ) {
+                  return item;
+                }
+              })
+              .map((item, index) => {
+                return (
                     <Card key={index}>
                       <p>{item.title}</p>
                       <Recipe_imgs src={item.image} alt="" />
@@ -154,15 +166,14 @@ const Recipespage = () => {
                         </Card_buttons>
                       </All_div>
                     </Card>
-                  );
-                })}
+                );
+              })}
           </Cards>
-        </All_div>
+      </All_div>
         <Right_part_u>
-          <MyRecipes recipes={recipes} deletingRecipe={deletingRecipe} />
+          <MyRecipes recipes={userData} deletingRecipe={deletingRecipe} />
         </Right_part_u>
       </All_part_u>
-    </>
   );
 };
 
