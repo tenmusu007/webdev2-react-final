@@ -9,8 +9,11 @@ import { DataProvider } from "../Components/UseContext/DataContext";
 function Recipe() {
 	return (
 		<>
+		<Nav />
+		<div style={{display : "flex"}}>
 			<MyFridge />
 			<Recipespage />
+		</div>
 		</>
 	);
 }

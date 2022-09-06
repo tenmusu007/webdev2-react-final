@@ -8,20 +8,23 @@ import { DataContext } from "./Backend/useContext";
 import { DataProvider } from "./Components/UseContext/DataContext";
 
 import Nav from "./Components/nav/Nav";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
 import Recipe from "./pages/Recipe";
+import Shopping from "./pages/Shopping";
 
 function App() {
 	return (
 		<div className='App'>
-			<AuthContextProvider>
-				<DataProvider>
-					<Router>
-						<Nav />
-					</Router>
-					<Recipe />
-				</DataProvider>
-			</AuthContextProvider>
+			<BrowserRouter>
+				<AuthContextProvider>
+					<DataProvider>
+						<Routes>
+							<Route path='/' element={<Recipe />} />
+							<Route path='MyshoppingList' element={<Shopping />} />
+						</Routes>
+					</DataProvider>
+				</AuthContextProvider>
+			</BrowserRouter>
 
 			{/* <DataContext> */}
 			{/* </DataContext> */}

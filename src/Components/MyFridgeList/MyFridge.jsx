@@ -17,7 +17,7 @@ export default function MyFridge() {
 	const [fridgeList, setFridgeList] = useState([]);
 	const { fridgeAddFireBase, user, setUser } = useContext(DataContext)
 	const { userData, count, isLogin} = useContext(AuthContext);
-	console.log("data", userData.data.myfridgeta);
+	// console.log("data", userData.data.myfridgeta);
 	useEffect(() => {
 		const loadIngredients = async () => {
 			const response = await axios.get(
@@ -29,14 +29,14 @@ export default function MyFridge() {
 	}, [query]);
 
 	
-	useEffect(() => {
-		console.log("useeffect 動いてもうてるがな");
-		// setFridgeList(userData.data.myfridge)
-		console.log("effect firdge", userData);
-	}, [userData])
+	// useEffect(() => {
+	// 	console.log("useeffect 動いてもうてるがな");
+	// 	setFridgeList(userData.data.myfridge)
+	// 	console.log("effect firdge", userData);
+	// }, [userData])
 	
 	useEffect(() => {
-		console.log("count reset");
+		// console.log("count reset");
 		setFridgeList([])
 	},[count])
 	const handleOnChange = (e) => {

@@ -25,7 +25,7 @@ export const AuthContextProvider = ({ children }) => {
 	const [user, setUser] = useState({});
 	const [isLogin, setIsLogin] = useState(false);
 	const [count, setCount] = useState(0);
-	console.log(count);
+	// console.log(count);
 	const [userData, setUserData] = useState({
 		data: {
 			docId: "",
@@ -36,7 +36,7 @@ export const AuthContextProvider = ({ children }) => {
 		},
 		docId: "",
 	});
-	console.log("auth", userData);
+	// console.log("auth", userData);
 	const provider = new GoogleAuthProvider();
 	const googleSignIn = () => {
 		signInWithPopup(auth, provider);
@@ -49,9 +49,9 @@ export const AuthContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-			console.log(currentUser);
+			// console.log(currentUser);
 			if (!currentUser) {
-				console.log("ログインしてへんわ");
+				// console.log("ログインしてへんわ");
 				setUser(null);
 				setUserData({
 					data: {
@@ -64,7 +64,7 @@ export const AuthContextProvider = ({ children }) => {
 					docId: "",
 				});
 			} else {
-				console.log("ログインしてまっせ");
+				// console.log("ログインしてまっせ");
 				setUser(currentUser);
 				const fetch = async () => {
 					const q = query(

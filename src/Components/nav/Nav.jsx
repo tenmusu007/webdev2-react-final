@@ -38,7 +38,7 @@ const Nav = () => {
                {user?.displayName ? "Hello, " + user.displayName + "!": ""}
          </h3>
          <div className='links'>
-            <Link className='link' to='/recipes'>Recipes</Link>
+            <Link className='link' to='/'>Recipes</Link>
             {user?.displayName ? <Link className='link' to='/MyshoppingList'>My Shopping List</Link> : ""}
             
             <div className='login'>

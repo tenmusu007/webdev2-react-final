@@ -17,14 +17,15 @@ const Recipespage = () => {
   const [recipes, setRecipes] = useState([]);
   const { recipeAddFireBase, user, setUser } = useContext(DataContext)
   const { userData, isLogin } = useContext(AuthContext);
-  console.log(userData);
+  // console.log(userData);
+  // console.log(checkBox);
   const handleCheckbox = (food) => {
-    console.log('working');
+    // console.log('working');
     if (!checkBoxValue.includes(food)) {
       console.log('入ってない');
       setCheckBoxValue((prev) => [...prev, food]);
     } else {
-      console.log('入ってる');
+      // console.log('入ってる');
       let newRecipes = checkBoxValue.filter((item, index) => {
         if (item !== food) {
           return item;
@@ -44,7 +45,7 @@ const Recipespage = () => {
   }, [checkBoxValue])
 
   const getData = (checkboxElements) => {
-    setCards(fakeData);
+    // setCards(fakeData);
     axios
       .get(
         `https://api.spoonacular.com/recipes/complexSearch?query=${checkboxElements}&number=50&apiKey=${process.env.REACT_APP_FOODAPIKEY}`
@@ -107,7 +108,7 @@ const Recipespage = () => {
         </div>
         <div className="all_div">
           <form>
-          {checkBox &&
+              {isLogin && checkBox &&
             checkBox.map((foods, i) => {
               return (
                 <div key={i}>
