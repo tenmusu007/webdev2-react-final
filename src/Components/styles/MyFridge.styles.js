@@ -8,7 +8,11 @@ export const Fridge = styled.div`
     border-radius: 10px;
     border: 2px solid black;
     min-height: 200px;
-    }
+<<<<<<< HEAD
+    
+=======
+
+>>>>>>> c33d39c51e1c14484b75f27f99cbb4512adfbbe5
 `;
 
 export const ListName = styled.h2`
@@ -26,6 +30,7 @@ export const Search = styled.input`
     color: black;
     ::placeholder {
         color: gray;
+    }
 `;
 
 export const Add = styled.input`
@@ -44,7 +49,7 @@ export const WhisperUl = styled.ul`
     position: absolute;
     background-color: white;
     border-radius: 4px;
-    border : 1px solid black;
+    border : ${props => props.b}px solid black;
     width: 170px;
     padding: 3px;
 `;

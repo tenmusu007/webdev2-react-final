@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
 	collection,
@@ -13,7 +13,8 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { async } from "@firebase/util";
+import { dataContext } from "./useContext";
+
 
 const provider = new GoogleAuthProvider();
 
@@ -31,17 +32,19 @@ const StyledTest = styled.section`
 `;
 
 const Test = () => {
+	const {data} = useContext(dataContext)
 	const auth = getAuth();
-	const [user, setUser] = useState({
-		data:[],
-		docId: "",
-	});
+	const { user, setUser } = useContext(dataContext);
+	// const [user, setUser] = useState({
+	// 	data:[],
+	// 	docId: "",
+	// });
 	const [getUser, setGetUser] = useState([]);
 	const [getRecipe, setGetRecipe] = useState([]);
 	useEffect(() => {
 		const fetch = async () => {
 			const q = query(collection(db, "recipe"), where("id", "==", user.id));
-			console.log(q);
+			// console.log(q);
 			const newArr = [];
 			const querySnapshot = await getDocs(q);
 			querySnapshot.forEach((doc) => {
@@ -50,20 +53,20 @@ const Test = () => {
 				newArr.push(doc.data());
 			});
 		};
-		const fetchRecipe = async () => {
-			const querySnapshot = await getDocs(collection(db, "recipe"));
-			const newArr = [];
-			querySnapshot.forEach((doc) => {
-				newArr.push({ data: doc.data(), docId: doc.id });
-			});
-			setGetRecipe(newArr);
-		};
-		fetchRecipe();
+		// const fetchRecipe = async () => {
+		// 	const querySnapshot = await getDocs(collection(db, "recipe"));
+		// 	const newArr = [];
+		// 	querySnapshot.forEach((doc) => {
+		// 		newArr.push({ data: doc.data(), docId: doc.id });
+		// 	});
+		// 	// setGetRecipe(newArr);
+		// };
+		// fetchRecipe();
 		fetch();
 		// fetchUsers();
 	}, [user]);
-	console.log("userData", getUser);
-	console.log("RecipeData", getRecipe);
+	// console.log("userData", getUser);
+	// console.log("RecipeData", getRecipe);
 	console.log("user", user);
 	const googleAthu = () => {
 		// signInWithRedirect(auth, provider)
@@ -72,7 +75,7 @@ const Test = () => {
 				const credential = GoogleAuthProvider.credentialFromResult(result);
 				const token = credential.accessToken;
 				const user = result.user;
-				console.log(user);
+				// console.log(user);
 				// setUser(user)
 				const fetch = async () => {
 					const q = query(
@@ -126,98 +129,29 @@ const Test = () => {
 			});
 	};
 
-	const [fridge, setFridge] = useState([]);
-	const [recipe, setRecipe] = useState([]);
-	const fridgeRef = useRef("");
-	const recipegeRef = useRef("");
-	const handleSubmitFridge = (e) => {
-		e.preventDefault();
-		const item = fridgeRef.current.value;
-		setFridge([...fridge, item]);
-		fridgeAddFireBase(item);
+	// const [fridge, setFridge] = useState([]);
+	// const [recipe, setRecipe] = useState([]);
+	// const fridgeRef = useRef("");
+	// const recipegeRef = useRef("");
+	// const handleSubmitFridge = (e) => {
+	// 	e.preventDefault();
+	// 	const item = fridgeRef.current.value;
+	// 	setFridge([...fridge, item]);
+	// 	fridgeAddFireBase(item);
 
-	};
-	const handleSubmitRecipe = (e) => {
-		e.preventDefault();
-		const item = recipegeRef.current.value;
-		setRecipe([...recipe, item]);
-		recipeAddFireBase(item);
-	};
-
-	const recipeAddFireBase = async (recipe) => {
-		console.log("recipe", recipe);
-		const q = query(collection(db, "recipe"), where("id", "==", user.data.id));
-		console.log(q);
-		const querySnapshot = await getDocs(q);
-		const newArr = [];
-		querySnapshot.forEach((doc) => {
-			// doc.data() is never undefined for query doc snapshots
-			newArr.push(doc.data());
-			console.log(doc.id, " => ", doc.data());
-		});
-		console.log(newArr);
-		try {
-			const docRef = await setDoc(doc(db, "recipe", `${user.docId}`), {
-				id: user.data.id,
-				docId: user.docId,
-				userName: user.data.userName,
-				itemToBuy: [...user.data.itemToBuy],
-				myfridge: [...user.data.myfridge],
-				myrecipe: [recipe],
-			});
-		} catch (e) {
-			console.error("Error adding document: ", e);
-		}
-	};
-	const fridgeAddFireBase = async (item) => {
-		const q = query(collection(db, "recipe"), where("id", "==", user.data.id));
-		const querySnapshot = await getDocs(q);
-		const newArr = [];
-		querySnapshot.forEach((doc) => {
-			// doc.data() is never undefined for query doc snapshots
-			newArr.push(doc.data());
-			console.log(doc.id, " => ", doc.data());
-		});
-		try {
-			const docRef = await setDoc(doc(db, "recipe", `${user.docId}`), {
-				id: user.data.id,
-				docId: user.docId,
-				userName: user.data.userName,
-				itemToBuy: [...user.data.itemToBuy],
-				myfridge: [item],
-				myrecipe: [...user.data.myrecipe],
-			});
-		} catch (e) {
-			console.error("Error adding document: ", e);
-		}
-	};
-	const toBuyAddFireBase = async (item) => {
-		const q = query(collection(db, "recipe"), where("id", "==", user.data.id));
-		console.log(q);
-		const querySnapshot = await getDocs(q);
-		const newArr = [];
-		querySnapshot.forEach((doc) => {
-			newArr.push(doc.data());
-			console.log(doc.id, " => ", doc.data());
-		});
-		try {
-			const docRef = await setDoc(doc(db, "recipe", `${user.docId}`), {
-				id: user.data.id,
-				docId: user.docId,
-				userName: user.data.userName,
-				itemToBuy: [item],
-				myfridge: [...user.data.myfridge],
-				myrecipe: [...user.data.myrecipe],
-			});
-		} catch (e) {
-			console.error("Error adding document: ", e);
-		}
-	};
+	// };
+	// const handleSubmitRecipe = (e) => {
+	// 	e.preventDefault();
+	// 	const item = recipegeRef.current.value;
+	// 	setRecipe([...recipe, item]);
+	// 	recipeAddFireBase(item);
+	// };
+// >>>>>>> 9813dde14e2c71548630b2a36dc2c78724e3ef36
 	return (
 		<StyledTest>
 			<div className='container'>
 				<button onClick={googleAthu}>Google</button>
-				<div>
+				{/* <div>
 					<h2>fridge list</h2>
 					{fridge.map((value, index) => {
 						return <li key={index}>{value}</li>;
@@ -238,14 +172,13 @@ const Test = () => {
 						<input type='text' ref={recipegeRef} />
 						<button>recipe</button>
 					</form>
-				</div>
+				</div> */}
 			</div>
 		</StyledTest>
 	);
 };
 
 export default Test;
-
 
 // {
 // 	id: recipe.id,
@@ -255,4 +188,3 @@ export default Test;
 // 	myfridge: [{obj}],
 // 	myrecipe: [{obj}],
 // 	}
-						

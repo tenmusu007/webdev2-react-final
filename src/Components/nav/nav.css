@@ -1,0 +1,36 @@
+* {
+   font-family: Verdana, Geneva, Tahoma, sans-serif;
+   font-weight: 600;
+}
+.navbar {
+   background-color: #E2E2E2;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   padding: 1rem;
+   width: 100%;
+}
+
+.links {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   column-gap: 1.5rem;
+}
+
+.link {
+   text-decoration: none;
+   color: #000;
+}
+
+h3 {
+   color: #383838;
+}
+
+button {
+   background-color: #919191;
+   border: none;
+   padding: 0.5rem;
+
+}
