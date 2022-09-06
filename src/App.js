@@ -12,12 +12,12 @@ import {  BrowserRouter as Router,   Routes,   Route} from 'react-router-dom';
 function App() {
   return (
     <div className="App">
-      <Recipes />
+      {/* <Recipes />
       <AuthContextProvider>
         <Router>
           <Nav />
         </Router>
-      </AuthContextProvider> 
+      </AuthContextProvider>  */}
       {/* <MyRecipes /> */}
       {/* <Test/> */}
       {/* <Recipespage /> */}
