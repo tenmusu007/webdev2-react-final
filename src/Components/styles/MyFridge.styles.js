@@ -45,7 +45,7 @@ export const WhisperUl = styled.ul`
     position: absolute;
     background-color: white;
     border-radius: 4px;
-    border : 1px solid black;
+    border : ${props => props.b}px solid black;
     width: 170px;
     padding: 3px;
 `;
