@@ -21,7 +21,7 @@ export default function MyFridge() {
 	useEffect(() => {
 		const loadIngredients = async () => {
 			const response = await axios.get(
-				`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=${process.env.REACT_APP_FOODAPIKEY}&query=${query}&metaInformation=true`
+				`https://api.spoonacular.com/food/ingredients/autocomplete?apiKey=88749994321f4e4eaa03a853e6edf42c&query=${query}&metaInformation=true`
 			);
 			setAutocomplete(response.data);
 		};
